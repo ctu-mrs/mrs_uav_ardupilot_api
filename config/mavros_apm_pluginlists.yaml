@@ -1,0 +1,68 @@
+# MAVROS plugin allowlist for ArduPilot, tuned for the MRS UAV System.
+#
+# Mirrors mrs_uav_px4_api/config/mavros_plugins.yaml but adapted for ArduPilot:
+#   - actuator_control is NOT enabled (ArduPilot has no equivalent path; control_group is disabled in ardupilot_api.yaml),
+#   - manual_control / setpoint_accel / setpoint_position / setpoint_velocity are not required
+#     (the MRS API drives the FCU exclusively through setpoint_raw/attitude).
+#
+/**:
+  ros__parameters:
+    # plugin_denylist:
+      # # common
+      # - 3dr_radio
+      # - hil
+      # - ftp
+      # - manual_control
+      # - safety_area
+      # - setpoint_accel
+      # - setpoint_velocity
+      # - setpoint_position
+      # - setpoint_attitude
+      # - setpoint_trajectory
+      # - home_position
+      # - sys_time
+      # - vfr_hud
+      # - waypoint
+      # - landing_target
+      # - mount_control
+      # - onboard_computer_status
+
+      # # extras
+      # - image_pub
+      # - vibration
+      # - rangefinder
+      # - vision_speed_estimate
+      # - vision_pose_estimate
+      # - px4flow
+      # - mocap_pose_estimate
+      # - cam_imu_sync
+      # - fake_gps
+      # - obstacle_distance
+      # - servo_state_publisher
+      # - companion_process_status
+      # - wheel_odometry
+      # - trajectory
+      # - adsb
+      # - log_transfer
+
+    plugin_allowlist:
+      # core
+      # NOTE: actuator_control intentionally omitted -- ArduPilot has no PX4-equivalent path.
+      - altitude
+      - attitude
+      - command
+      - global_position
+      - home_position
+      - imu
+      - local_position
+      - rc_io
+      - setpoint_attitude
+      - setpoint_raw
+      - sys_status
+      - sys_time
+
+      # mavros_extras
+      - distance_sensor
+      - gps_rtk
+      - gps_status
+      - odometry

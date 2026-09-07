@@ -1,0 +1,50 @@
+# ArduPilot API configuration for the MRS UAV System
+#
+# Target firmware: ArduPilot 4.6.3
+#
+# IMPORTANT: This plugin sends attitude / attitude-rate setpoints to MAVROS' setpoint_raw/attitude
+# topic, which is forwarded to the FCU as SET_ATTITUDE_TARGET. For ArduPilot to interpret the
+# thrust field as a DIRECT thrust value (matching the semantics expected by the MRS UAV System),
+# instead of a normalized climb-rate command (where 0.5 ~= hover), the FCU MUST be configured with:
+#
+#   GUID_OPTIONS = 8   # bit 3 (value 8) -> pass-through thrust in GUIDED mode
+#
+# See https://ardupilot.org/dev/docs/copter-commands-in-guided-mode.html and README.md.
+
+hw_interface_plugin: "mrs_uav_ardupilot_api::MrsUavArdupilotApi"
+plugin:
+
+  mavros_timeout: 1.0 # [s]
+  mavros_passable_delay: 0.05 # [s]
+
+  gnss:
+    utm_zone: "32T"
+    utm_x: 465710.758973
+    utm_y: 5249465.43086
+    amsl: 340.0
+
+  input_mode:
+    # NOTE: control_group is disabled by default. ArduPilot has no PX4-equivalent
+    # actuator_control / SET_ACTUATOR_CONTROL_TARGET path; enabling it requires a custom mapping.
+    control_group: false
+    attitude_rate: true # body-rate channel disabled: Se3's kq rate loop churned
+    attitude:      true  # quaternion attitude + thrust passthrough (primary input)
+
+  outputs:
+    distance_sensor:      true
+    gnss:                 true
+    gnss_status:          true
+    rtk:                  false # TODO implement RTK
+    imu:                  true
+    altitude:             true
+    magnetometer_heading: true
+    magnetic_field:       true
+    rc_channels:          true
+    rc_rssi:              true
+    battery_state:        true
+    position:             true
+    orientation:          true
+    velocity:             true
+    angular_velocity:     true
+    odometry:             true
+    ground_truth:         true
